@@ -1,0 +1,17 @@
+        {
+            "credentials": {
+                "host": "10.0.4.30",
+                "password": "redis_password",
+                "port": 45470
+            },
+            "syslog_drain_url": null,
+            "volume_mounts": [],
+            "label": "p-redis",
+            "provider": null,
+            "plan": "shared-vm",
+            "binding_name": "redis-binding",
+            "tags": [
+                "pivotal",
+                "redis"
+            ]
+        }

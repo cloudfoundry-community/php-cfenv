@@ -1,0 +1,32 @@
+{
+    "name": "dmcintyre-pivotal/php-cfenv",
+    "description": "Library to manage Cloud Foundry service bindings",
+    "minimum-stability": "stable",
+    "license": "MIT",
+    "keywords": [
+        "cloudfoundry",
+        "binding",
+        "services",
+        "vcapservices"
+    ],
+    "authors": [
+        {
+            "name": "Duncan McIntyre",
+            "email": "dmcintyre@pivotal.io"
+        }
+    ],
+    "require-dev": {
+        "predis/predis": "~1.0",
+        "mongodb/mongodb": "~1.5",
+        "phpunit/phpunit": "^9"
+    },
+    "autoload": {
+        "psr-4": {
+            "PHPCFEnv\\CFEnv\\": "src/CFEnv/"
+        }
+    },
+    "suggest": {
+        "predis/predis": "To get an automated RedisConnector",
+        "mongodb/mongodb": "To get an atuomated MongoDBClient"
+    }
+}
