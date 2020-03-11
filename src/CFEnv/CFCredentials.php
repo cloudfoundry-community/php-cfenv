@@ -7,7 +7,7 @@ namespace PHPCFEnv\CFEnv;
 class CFCredentials {
 
     private $credentialsData = array();
-    private $uriInfo = array();
+    private $uriInfo = null;
  
     public function __construct(array $jsonArray) {
         $this->credentialsData = $jsonArray;
@@ -72,6 +72,16 @@ class CFCredentials {
             return $this->uriInfo['pass'];
         }
 
+        return null;
+    }
+
+    /**
+     * Returns the path part of the URI with any leading '/' removed
+     */
+    public function getPath() {
+        if(isset($this->uriInfo['path']) && !empty($this->uriInfo['path'])) {
+            return str_replace('/','',$this->uriInfo['path']);
+        }
         return null;
     }
 
