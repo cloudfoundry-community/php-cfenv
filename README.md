@@ -2,7 +2,7 @@
 PHP implementation of helper classes like java-cfenv to make it easier for PHP applications to bind to services in Cloud Foundry
 
 ## Credits
-I took inspiration from a cf-helper-php and I used example configurations for testing taken from java-cfenv:
+I took inspiration from cf-helper-php and I used example configurations for testing taken from java-cfenv:
 
 * cf-helper-php - https://github.com/cloudfoundry-community/cf-helper-php
 * java-cfenv - https://github.com/pivotal-cf/java-cfenv
@@ -10,7 +10,7 @@ I took inspiration from a cf-helper-php and I used example configurations for te
 
 ## Usage
 If you use Composer then you can simply add the dependency to your composer.json
-```
+```php
 {
 	"repositories": [
 		{
@@ -24,7 +24,7 @@ If you use Composer then you can simply add the dependency to your composer.json
 }
 ```
 Here's an example of getting a connection to a MongoDB database
-```
+```PHP
 <?php
 namespace PHPCFEnv\CFEnv;
 require_once __DIR__.'/../lib/vendor/autoload.php';
@@ -59,3 +59,9 @@ $path = $creds->getPath();
 
 $database = $client->selectDatabase($path);
 ```
+## Built-in Bindings
+The package provides three bindings
+1. MongoDB
+2. Redis
+3. PDO - This binding understands MySql, Oracle, Postgresql, MariaDB, and Sqlite databases
+
