@@ -51,7 +51,7 @@ $binding->bind($service);
 $client = $binding->getMongoDBClient();
 
 /**
-* You'll need to start by connecting to your database, and it's name is given
+* You'll need to start by connecting to your database, and its name is given
 * by the 'path' component of the connection URI
 **/
 $creds = $service->getCredentials();
