@@ -1,0 +1,38 @@
+{
+    "p-redis": [
+        {
+            "credentials": {
+                "host": "10.0.4.30",
+                "password": "180550d7-f5b2-4adb-81c8-f90906249159",
+                "port": 45470
+            },
+            "syslog_drain_url": null,
+            "volume_mounts": [],
+            "label": "p-redis",
+            "provider": null,
+            "plan": "shared-vm",
+            "name": "redis",
+            "tags": [
+                "pivotal",
+                "redis"
+            ]
+        },
+        {
+            "credentials": {
+                "host": "10.0.4.31",
+                "password": "secret",
+                "port": 45470
+            },
+            "syslog_drain_url": null,
+            "volume_mounts": [],
+            "label": "p-redis",
+            "provider": null,
+            "plan": "shared-vm",
+            "name": "redis",
+            "tags": [
+                "pivotal",
+                "redis"
+            ]
+        }
+    ]
+}

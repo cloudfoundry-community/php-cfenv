@@ -90,7 +90,8 @@ class CFEnv {
      * Return the service binding which matches the name pattern
      * @param string $namePattern A regular expression to match against name
      * @return CFService
-     * @throw NonUniqueServiceException if there is more than one matching service
+     * @throw CFNonUniqueServiceException if there is more than one matching service
+     * @throw CFServiceNotFoundException if there is no matching service
      */
     public function getServiceByName($namePattern) {
         $services = array();
@@ -104,7 +105,7 @@ class CFEnv {
         }
 
         if(count($services) == 0) {
-            return null;
+            throw new CFServiceNotFoundException('No service matches pattern '.$namePattern);
         }
 
         return $services[0];
@@ -113,6 +114,7 @@ class CFEnv {
     /**
      * Return the service which has any of the given tags
      * @throw CFNonUniqueServiceException if more than one service matches
+     * @throw CFServiceNotFoundException if there is no matching service
      */
     public function getServiceByTags(array $tags) {
         $services = array();
@@ -128,7 +130,7 @@ class CFEnv {
         }
 
         if(count($services) == 0) {
-            return null;
+            throw new CFServiceNotFoundException('No service matches tags '.implode("|", $tags));
         }
 
         return $services[0];
@@ -139,6 +141,7 @@ class CFEnv {
      * It can be hard to track down a database connection, so this method searches using the name
      * and checks the tags for any of the known database names also
      * @throw CFNonUniqueServiceException if there is more than one database service
+     * @throw CFServiceNotFoundException if there is no matching service
      */
     public function getDatabase() {
         $services = array();
@@ -160,7 +163,7 @@ class CFEnv {
         }
 
         if(count($services) == 0) {
-            return null;
+            throw new CFServiceNotFoundException("No database service found");
         }
 
         return $services[0];
