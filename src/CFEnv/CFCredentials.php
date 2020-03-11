@@ -11,6 +11,7 @@ class CFCredentials {
  
     public function __construct(array $jsonArray) {
         $this->credentialsData = $jsonArray;
+        $this->createUriInfo();
     }
 
     public function getMap() {
@@ -23,9 +24,8 @@ class CFCredentials {
             return $host;
         }
 
-        $info = $this->createOrGetUriInfo();
-        if(array_key_exists("host", $info)) {
-            return $info['host'];
+        if(array_key_exists("host", $this->uriInfo)) {
+            return $$this->uriInfo['host'];
         }
 
         return null;
@@ -37,9 +37,8 @@ class CFCredentials {
             return $port;
         }
 
-        $info = $this->createOrGetUriInfo();
-        if(array_key_exists("port", $info)) {
-            return $info['port'];
+        if(array_key_exists("port", $this->uriInfo)) {
+            return $this->uriInfo['port'];
         }
 
         return null;
@@ -55,9 +54,8 @@ class CFCredentials {
             return $username;
         }
 
-        $info = $this->createOrGetUriInfo();
-        if(array_key_exists("user", $info)) {
-            return $info['user'];
+        if(array_key_exists("user", $this->uriInfo)) {
+            return $this->uriInfo['user'];
         }
 
         return null;
@@ -70,9 +68,8 @@ class CFCredentials {
             return $password;
         }
 
-        $info = $this->createOrGetUriInfo();
-        if(array_key_exists("pass", $info)) {
-            return $info['pass'];
+        if(array_key_exists("pass", $this->uriInfo)) {
+            return $this->uriInfo['pass'];
         }
 
         return null;
@@ -83,10 +80,10 @@ class CFCredentials {
     }
 
     public function getUriInfo() {
-        return $this->createOrGetUriInfo();
+        return $this->uriInfo;
     }
 
-    private function createOrGetUriInfo() {
+    private function createUriInfo() {
         if(empty($this->uriInfo)) {
             $this->uriInfo = parse_url($this->getString(array("uri","url")));
         }
