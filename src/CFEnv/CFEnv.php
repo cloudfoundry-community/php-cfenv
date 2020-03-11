@@ -130,7 +130,7 @@ class CFEnv {
             }
         }
         if(count($services) > 1) {
-            throw new CFNonUniqueServiceException("Multiple services match '$namePattern'");
+            throw new CFServiceNotUniqueException("Multiple services match '$namePattern'");
         }
 
         if(count($services) == 0) {
@@ -155,7 +155,7 @@ class CFEnv {
             }
         }
         if(count($services) > 1) {
-            throw new CFNonUniqueServiceException('Multiple services match tags '.implode("|", $tags));
+            throw new CFServiceNotUniqueException('Multiple services match tags '.implode("|", $tags));
         }
 
         if(count($services) == 0) {
@@ -188,7 +188,7 @@ class CFEnv {
         }
 
         if(count($services) > 1) {
-            throw new CFNonUniqueServiceException("Multiple database services found");
+            throw new CFServiceNotUniqueException("Multiple database services found");
         }
 
         if(count($services) == 0) {

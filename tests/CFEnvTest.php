@@ -69,21 +69,21 @@ final class CFEnvTest extends TestCase {
     public function testMultipleDatabaseInstances() {
         $env = $this->getEnv('vcap-services-multiple-mysql.json');
         
-        $this->expectException(CFNonUniqueServiceException::class);
+        $this->expectException(CFServiceNotUniqueException::class);
         $service = $env->getDatabase();
     }
 
     public function testMultipleNamedInstances() {
         $env = $this->getEnv('vcap-services-multiple-mysql.json');
         
-        $this->expectException(CFNonUniqueServiceException::class);
+        $this->expectException(CFServiceNotUniqueException::class);
         $service = $env->getServiceByName("mysql");
     }
 
     public function testMultipleTaggedInstances() {
         $env = $this->getEnv('vcap-services-multiple-mysql.json');
         
-        $this->expectException(CFNonUniqueServiceException::class);
+        $this->expectException(CFServiceNotUniqueException::class);
         $service = $env->getServiceByTags(array("relational","mysql"));
     }
 

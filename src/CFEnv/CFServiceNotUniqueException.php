@@ -16,5 +16,5 @@
  */
 namespace PHPCFEnv\CFEnv;
 
-class CFNonUniqueServiceException extends \Exception {
+class CFServiceNotUniqueException extends \Exception {
 }

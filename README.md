@@ -65,6 +65,16 @@ The package provides three bindings
 2. Redis
 3. PDO - This binding understands MySql, Oracle, Postgresql, MariaDB, and Sqlite databases
 
+## Exceptions
+The `CFEnv` methods `getServiceByName`, `getServiceByTags` and `getDatabase` can throw exceptions
+
+ * CFServiceNotFoundException - if no service matching the criteria could be found
+ * CFServiceNotUniqueException - if more than one service matching the criteria was found
+
+ Additionally the CFEnv method `load` can throw
+
+ * CFFileUnreadableException - if a defaults file could not be read (see below)
+
 ## Supplying defaults
 In local dev envrionments it may be easier to supply settings in a file rather than through environment variables.
 This is accomplished by providing a path to a file containing JSON formatted settings corresponding to VCAP_APPLICATION and VCAP_SERVICES:
