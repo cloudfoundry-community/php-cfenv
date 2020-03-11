@@ -30,77 +30,80 @@ final class CFEnvTest extends TestCase {
         $this->assertNull($env->getApplication());
     }
 
-    public function testSingleServiceInstances() {
-        $jsonString = file_get_contents(__DIR__.'/vcap-services.json');
-        $env = new CFEnv();
-        $env->loadServices($jsonString);
+    public function getEnv($servicesFile = null, $applicationFile = null) {
+        if(!empty($applicationFile)) {
+            $applicationFile = __DIR__.'/'.$applicationFile;
+        } 
+        
+        if(!empty($servicesFile)) {
+            $servicesFile = __DIR__.'/'.$servicesFile;
+        } 
+        
+         $env = new CFEnv($applicationFile, $servicesFile);
+         $env->load();
+         return $env;
+    }
 
+    public function testSingleServiceInstances() {
+        $env = $this->getEnv('vcap-services.json');
+        
         $services = $env->getServices();
         $this->assertEquals(3, count($services));
     }
 
     public function testGetByName() {
-        $jsonString = file_get_contents(__DIR__.'/vcap-services.json');
-        $env = new CFEnv();
-        $env->loadServices($jsonString);
-
+        $env = $this->getEnv('vcap-services.json');
+ 
         $service = $env->getServiceByName("mysql");
         $this->assertIsObject($service);
     }
 
     public function testGetSingleDatabase() {
-        $jsonString = file_get_contents(__DIR__.'/vcap-services.json');
-        $env = new CFEnv();
-        $env->loadServices($jsonString);
+        $env = $this->getEnv('vcap-services.json');
+ 
         $service = $env->getDatabase();
         $this->assertIsObject($service);
         $this->assertEquals("mysql", $service->getName());
     }
 
     public function testMultipleDatabaseInstances() {
-        $jsonString = file_get_contents(__DIR__.'/vcap-services-multiple-mysql.json');
-        $env = new CFEnv();
-        $env->loadServices($jsonString);
+        $env = $this->getEnv('vcap-services-multiple-mysql.json');
+        
         $this->expectException(CFNonUniqueServiceException::class);
         $service = $env->getDatabase();
     }
 
     public function testMultipleNamedInstances() {
-        $jsonString = file_get_contents(__DIR__.'/vcap-services-multiple-mysql.json');
-        $env = new CFEnv();
-        $env->loadServices($jsonString);
+        $env = $this->getEnv('vcap-services-multiple-mysql.json');
+        
         $this->expectException(CFNonUniqueServiceException::class);
         $service = $env->getServiceByName("mysql");
     }
 
     public function testMultipleTaggedInstances() {
-        $jsonString = file_get_contents(__DIR__.'/vcap-services-multiple-mysql.json');
-        $env = new CFEnv();
-        $env->loadServices($jsonString);
+        $env = $this->getEnv('vcap-services-multiple-mysql.json');
+        
         $this->expectException(CFNonUniqueServiceException::class);
         $service = $env->getServiceByTags(array("relational","mysql"));
     }
 
     public function testNoNameMatch() {
-        $jsonString = file_get_contents(__DIR__.'/vcap-services-multiple-mysql.json');
-        $env = new CFEnv();
-        $env->loadServices($jsonString);
+        $env = $this->getEnv('vcap-services-multiple-mysql.json');
+        
         $this->expectException(CFServiceNotFoundException::class);
         $service = $env->getServiceByName("I'm not here");
     }
 
     public function testNoTagsMatch() {
-        $jsonString = file_get_contents(__DIR__.'/vcap-services-multiple-mysql.json');
-        $env = new CFEnv();
-        $env->loadServices($jsonString);
+        $env = $this->getEnv('vcap-services-multiple-mysql.json');
+        
         $this->expectException(CFServiceNotFoundException::class);
         $service = $env->getServiceByTags(array("missing","tags"));
     }
 
     public function testNoDatabase() {
-        $jsonString = file_get_contents(__DIR__.'/vcap-services-multiple-redis.json');
-        $env = new CFEnv();
-        $env->loadServices($jsonString);
+        $env = $this->getEnv('vcap-services-multiple-redis.json');
+        
         $this->expectException(CFServiceNotFoundException::class);
         $service = $env->getDatabase();
     }

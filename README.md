@@ -65,3 +65,21 @@ The package provides three bindings
 2. Redis
 3. PDO - This binding understands MySql, Oracle, Postgresql, MariaDB, and Sqlite databases
 
+## Supplying defaults
+In local dev envrionments it may be easier to supply settings in a file rather than through environment variables.
+This is accomplished by providing a path to a file containing JSON formatted settings corresponding to VCAP_APPLICATION and VCAP_SERVICES:
+
+```
+$env = new CFEnv("/usr/local/etc/myapp/application.json", "/usr/local/etc/myapp/services.json");
+$env->load();
+```
+
+Either file may be omitted (set to null)
+```
+$env = new CFEnv(null, "/usr/local/etc/myapp/services.json");
+$env->load();
+```
+
+If a file is specified and cannot be read, a CFFileUnreadableException will be thrown when CFEnv::load() is called.
+
+The files will only be parsed if the VCAP_APPLICATION environment variable is not set. If this variable is set then it is assumed that the app is running in CloudFoundry.

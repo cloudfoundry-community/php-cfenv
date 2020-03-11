@@ -30,16 +30,45 @@ class CFEnv {
     const VCAP_APPLICATION = 'VCAP_APPLICATION';
     const VCAP_SERVICES = 'VCAP_SERVICES';
 
+    private $applicationFile;
+    private $servicesFile;
+    private $loaded = false;
+
     private $application;
     private $services = array();
+
+    public function __construct($applicationFile = null, $servicesFile = null) {
+        $this->applicationFile = $applicationFile;
+        $this->servicesFile = $servicesFile;
+    }
 
     /**
      * Initialise from the environment variables
      * @return void
      */
     public function load() {
-        $this->loadApplication(getenv(self::VCAP_APPLICATION));
-        $this->loadServices(getenv(self::VCAP_SERVICES));
+        if(!$this->loaded) {
+            if($this->isInCloudFoundry()) {
+                $this->loadApplication(getenv(self::VCAP_APPLICATION));
+                $this->loadServices(getenv(self::VCAP_SERVICES));
+            } else {
+                if(isset($this->applicationFile) && !empty($this->applicationFile)) {
+                    if(is_readable($this->applicationFile)) {
+                        $this->loadApplication(file_get_contents($this->applicationFile));
+                    } else {
+                        throw new CFFileUnreadableException("Cannot read application configuration from ".$this->applicationFile);
+                    }
+                }
+                if(isset($this->servicesFile) && !empty($this->servicesFile)) {
+                    if(is_readable($this->servicesFile)) {
+                        $this->loadServices(file_get_contents($this->servicesFile));
+                    } else {
+                        throw new CFFileUnreadableException("Cannot read services configuration from ".$this->servicesFile);
+                    }
+                }
+            }
+            $this->loaded = true;
+        }
     }
 
     public function isInCloudFoundry() {
