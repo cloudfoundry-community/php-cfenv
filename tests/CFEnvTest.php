@@ -44,6 +44,27 @@ final class CFEnvTest extends TestCase {
          return $env;
     }
 
+    public function testApplication() {
+        $env = $this->getEnv(null, 'vcap-application.json');
+
+        $this->assertIsObject($env->getApplication());
+    }
+
+    public function testIsInCloudFoundry() {
+
+        $json = json_encode(file_get_contents(__DIR__.'/vcap-application.json'));
+        $json = str_replace('\\n','',$json);
+        $json = str_replace('\\"','"', $json);
+        // Strip the leading and trailing '"' so it can be passed to putenv
+        $json = substr($json, 1, strlen($json) - 2);
+ 
+        putenv('VCAP_APPLICATION='.$json);
+        $read = getenv('VCAP_APPLICATION');
+        $env = $this->getEnv();
+        $this->assertIsObject($env->getApplication());
+        putenv('VCAP_APPLICATION');
+    }
+
     public function testSingleServiceInstances() {
         $env = $this->getEnv('vcap-services.json');
         

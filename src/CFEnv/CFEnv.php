@@ -83,9 +83,11 @@ class CFEnv {
         $this->services = array();
         if(strlen($vcapServicesJson) > 0) {
             $servicesArray = json_decode($vcapServicesJson, true);
-            foreach($servicesArray as $serviceType => $serviceTypeArray) {
-                foreach($serviceTypeArray as $service) {
-                    $this->services[] = new CFService($serviceType, $service);
+            if(is_array($servicesArray)) {
+                foreach($servicesArray as $serviceType => $serviceTypeArray) {
+                    foreach($serviceTypeArray as $service) {
+                        $this->services[] = new CFService($serviceType, $service);
+                    }
                 }
             }
         }
@@ -97,7 +99,10 @@ class CFEnv {
     public function loadApplication($vcapApplicationJson) {
         $vcapApplicationJson = trim($vcapApplicationJson);
         if(strlen($vcapApplicationJson) > 0) {
-            $this->application = new CFApplication(json_decode($vcapApplicationJson, true));
+            $appData = json_decode($vcapApplicationJson, true);
+            if(is_array($appData)) {
+                $this->application = new CFApplication($appData);
+            }
         }
     }
 
