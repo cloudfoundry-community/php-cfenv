@@ -1,5 +1,19 @@
 <?php
-
+/*
+ * Copyright 2019 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 namespace PHPCFEnv\CFEnv;
 
 /**
@@ -11,7 +25,6 @@ namespace PHPCFEnv\CFEnv;
  * 
  * VCAP_SERVICES - contains a JSON array of service bindings 
  */
-
 class CFEnv {
 
     const VCAP_APPLICATION = 'VCAP_APPLICATION';
@@ -27,6 +40,10 @@ class CFEnv {
     public function load() {
         $this->loadApplication(getenv(self::VCAP_APPLICATION));
         $this->loadServices(getenv(self::VCAP_SERVICES));
+    }
+
+    public function isInCloudFoundry() {
+        return !empty(getenv(self::VCAP_APPLICATION));
     }
 
     /**
@@ -93,6 +110,10 @@ class CFEnv {
         return $services[0];
     }
 
+    /**
+     * Return the service which has any of the given tags
+     * @throw CFNonUniqueServiceException if more than one service matches
+     */
     public function getServiceByTags(array $tags) {
         $services = array();
         foreach($this->services as $service) {
@@ -103,7 +124,7 @@ class CFEnv {
             }
         }
         if(count($services) > 1) {
-            throw new CFNonUniqueServiceException("Multiple services match '$namePattern'");
+            throw new CFNonUniqueServiceException('Multiple services match tags '.implode("|", $tags));
         }
 
         if(count($services) == 0) {
@@ -117,6 +138,7 @@ class CFEnv {
      * Convenience method to return a database service
      * It can be hard to track down a database connection, so this method searches using the name
      * and checks the tags for any of the known database names also
+     * @throw CFNonUniqueServiceException if there is more than one database service
      */
     public function getDatabase() {
         $services = array();
