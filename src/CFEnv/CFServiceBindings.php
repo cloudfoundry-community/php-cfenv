@@ -65,11 +65,8 @@ class CFServiceBindings {
      * @throw CFServiceNotFoundException
      * @throw CFServiceNotUniqueException
      */
-    public function getRedisBinding() {
-        $service = $this->env->getServiceByName("redis");
-        $binding = new CFRedisBinding();
-        $binding->bind($service);
-        return $binding;
+    public function getRedisBinding($name = null) {
+        return $this->getServiceBinding($name, 'redis', new CFRedisBinding());
     }
 
     /**
@@ -77,11 +74,8 @@ class CFServiceBindings {
      * @throw CFServiceNotFoundException
      * @throw CFServiceNotUniqueException
      */
-    public function getMongoDBBinding() {
-        $service = $this->env->getServiceByName("mongodb");
-        $binding = new CFMongoDBBinding();
-        $binding->bind($service);
-        return $binding;
+    public function getMongoDBBinding($name = null) {
+        return $this->getServiceBinding($name, 'mongodb', new CFMongoDBBinding());
     }
 
     /**
@@ -89,10 +83,21 @@ class CFServiceBindings {
      * @throw CFServiceNotFoundException
      * @throw CFServiceNotUniqueException
      */
-    public function getNFSBinding() {
-        $service = $this->env->getServiceByName("nfs");
-        $binding = new CFNFSBinding();
-        $binding->bind($service);
-        return $binding;
+    public function getNFSBinding($name = null) {
+        return $this->getServiceBinding($name, 'nfs', new CFNFSBinding());
+    }
+
+    protected function getServiceBinding($serviceName, $default, $binding) {
+         try {
+             if(empty($serviceName)) {
+                 $service = $this->env->getServiceByName($default);
+             } else {
+                $service = $this->env->getServiceByName($serviceName);
+             }
+             $binding->bind($service);
+            return $binding;
+        } catch (CFServiceNotFoundException | CFServiceNotUniqueException $e) {
+            return null;
+        }
     }
 }
