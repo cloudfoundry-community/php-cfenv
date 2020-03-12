@@ -43,4 +43,28 @@ final class CFServiceBindingsTest extends TestCase {
         $binding = $this->getBindings()->getNFSBinding();
         $this->assertInstanceOf(CFNFSBinding::class, $binding);
     }
+
+    public function testNoDatabase() {
+        $bindings = $this->getBindings();
+        $binding = $bindings->getPDOBinding("I don't exist");
+        $this->assertNull($binding);
+    }
+
+    public function testNoRedis() {
+        $bindings = $this->getBindings();
+        $binding = $bindings->getRedisBinding("I don't exist");
+        $this->assertNull($binding);
+    }
+
+    public function testNoMongoDB() {
+        $bindings = $this->getBindings();
+        $binding = $bindings->getMongoDBBinding("I don't exist");
+        $this->assertNull($binding);
+    }
+
+    public function testNoNFS() {
+        $bindings = $this->getBindings();
+        $binding = $bindings->getNFSBinding("I don't exist");
+        $this->assertNull($binding);
+    }
 }
