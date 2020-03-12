@@ -22,14 +22,13 @@ class CFService {
     const CREDENTIALS = "credentials";
     const VOLUME_MOUNTS = "volume_mounts";
 
-    private $type;
     private $serviceData = array();
     private $cfCredentials;
     private $cfVolumes = array();
+    private $tags = null;
 
 
-    public function __construct(string $serviceType, array $jsonArray) {
-        $this->serviceType = $serviceType;
+    public function __construct(array $jsonArray) {
         $this->serviceData = $jsonArray;
         $this->cfCredentials = $this->createCredentials();
         $this->cfVolumes = $this->createVolumes();
@@ -55,10 +54,6 @@ class CFService {
         return $vols;
     }
 
-    public function getServiceType() {
-        return $this->serviceType;
-    }
-
     public function getMap() {
         return $this->serviceData;
     }
@@ -71,12 +66,60 @@ class CFService {
         return $this->cfVolumes;
     }
 
+    /**
+     * Get the tags (if any) set on this service
+     * Converts all tags to lowercase
+     * @return array
+     */
     public function getTags() {
-        $tags = array();
-        if(array_key_exists(self::TAGS, $this->serviceData)) {
-            $tags = $this->serviceData[self::TAGS];
+        if(!is_array($this->tags)) {
+            $this->tags = array();
+            if(array_key_exists(self::TAGS, $this->serviceData)) {
+                foreach($this->serviceData[self::TAGS] as $tag) {
+                    $this->tags[] = strtolower($tag);
+                }
+            }
         }
-        return $tags;
+        return $this->tags;
+    }
+
+    /**
+     * @return boolean true if the given tag is set (case is ignored)
+     */
+    public function hasTag($tag) {
+        $haystack = $this->getTags();
+        if(in_array(strtolower($tag), $haystack)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @return boolean true if any of the given tags is set (case is ignored)
+     */
+    public function hasAnyTag(array $tags) {
+        $haystack = $this->getTags();
+        foreach($tags as $needle) {
+            if(in_array(strtolower($needle), $haystack)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @return boolean true if all of the given tags are set (case is ignored)
+     */
+    public function hasAllTags(array $tags) {
+        $haystack = $this->getTags();
+        $found = 0;
+
+        foreach($tags as $needle) {
+            if(in_array(strtolower($needle), $haystack)) {
+                $found++;
+            }
+        }
+        return $found == count($tags);
     }
 
     public function getLabel() {

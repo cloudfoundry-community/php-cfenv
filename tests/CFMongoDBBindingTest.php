@@ -23,11 +23,21 @@ final class CFMongoDBBindingTest extends TestCase {
     public function testBinding() {
         $jsonString = file_get_contents(__DIR__.'/cf-service-mongodb.json');
         
-        $service = new CFService('mongodb', json_decode($jsonString, true));
+        $service = new CFService(json_decode($jsonString, true));
         
         $binding = new CFMongoDBBinding();
         $binding->bind($service);
         $client = $binding->getMongoDBClient();
         $this->assertIsObject($client);
+    }
+
+    function testUnsupportedBinding() {
+        $jsonString = file_get_contents(__DIR__.'/cf-service-redis.json');
+        
+        $service = new CFService(json_decode($jsonString, true));
+        
+        $binding = new CFMongoDBBinding();
+        $this->expectException(CFUnsupportedBindingException::class);
+        $binding->bind($service);
     }
 }

@@ -23,7 +23,7 @@ final class CFPDOBindingTest extends TestCase {
     public function testBinding() {
         $jsonString = file_get_contents(__DIR__.'/cf-service-mysql.json');
         
-        $service = new CFService('mysql', json_decode($jsonString, true));
+        $service = new CFService(json_decode($jsonString, true));
         
         $binding = new CFPDOBinding();
         $binding->bind($service);

@@ -69,7 +69,7 @@ final class CFEnvTest extends TestCase {
         $env = $this->getEnv('vcap-services.json');
         
         $services = $env->getServices();
-        $this->assertEquals(3, count($services));
+        $this->assertEquals(4, count($services));
     }
 
     public function testGetByName() {

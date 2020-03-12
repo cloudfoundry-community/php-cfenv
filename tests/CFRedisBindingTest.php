@@ -23,7 +23,7 @@ final class CFRedisBindingTest extends TestCase {
     public function testBinding() {
         $jsonString = file_get_contents(__DIR__.'/cf-service-redis.json');
         
-        $service = new CFService('mongodb', json_decode($jsonString, true));
+        $service = new CFService(json_decode($jsonString, true));
         
         $binding = new CFRedisBinding();
         $binding->bind($service);

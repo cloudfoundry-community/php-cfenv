@@ -15,12 +15,10 @@
  * limitations under the License.
  */
 namespace PHPCFEnv\CFEnv;
-use Predis\Client;
 
-class CFRedisBinding extends CFBinding {
+class CFNFSBinding extends CFBinding {
 
     private $service;
-    private $client;
 
     /**
      * Bind to the given service instance.
@@ -28,21 +26,13 @@ class CFRedisBinding extends CFBinding {
      * @throw CFUnsupportedBindingException 
      */
     public function bind(CFService $service) {
-        if(!$service->hasTag('redis')) {
-            throw new CFUnsupportedBindingException("CFPDOBinding cannot be bound to the service '".$service->getName());
+        if(!$service->hasTag('nfs')) {
+            throw new CFUnsupportedBindingException("CFNFSBinding cannot be bound to the service '".$service->getName());
         }
         $this->service = $service;
-        $creds = $service->getCredentials();
-
-        $this->client = new Client([
-            'scheme' => 'tcp',
-            'host' => $creds->getHost(),
-            'port' => $creds->getPort(),
-            'password' => $creds->getPassword(),
-        ]);
     }
 
-    public function getRedisClient() {
-        return $this->client;
+    public function getVolumes() {
+        return $this->service->getVolumes();
     }
 }

@@ -17,12 +17,20 @@
 namespace PHPCFEnv\CFEnv;
 use MongoDB\Client;
 
-class CFMongoDBBinding implements CFBinding {
+class CFMongoDBBinding extends CFBinding {
 
     private $service;
     private $client;
 
+    /**
+     * Bind to the given service instance.
+     * Throw an exception if the service instance is not appropriate
+     * @throw CFUnsupportedBindingException 
+     */
     public function bind(CFService $service) {
+        if(!$service->hasTag('mongodb')) {
+            throw new CFUnsupportedBindingException("CFMongoDBBinding cannot be bound to the service '".$service->getName());
+        }
         $this->service = $service;
         $this->client = new Client($service->getCredentials()->getUri());
     }

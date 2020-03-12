@@ -62,5 +62,32 @@
                 }
             ]
         }
+    ],
+    "mongodb": [
+        {
+            "binding_name": null,
+            "credentials": {
+                "uri": "mongodb://CloudFoundry_topSecret:s3cr3t@bigbox.mongodbsaas.tst:11128/CloudFoundry_topSecret"
+            },
+            "instance_name": "my-mongodb",
+            "label": "mdbaas",
+            "name": "my-mongodb",
+            "plan": "sandbox",
+            "provider": null,
+            "syslog_drain_url": null,
+            "tags": [
+                "Cloud Databases",
+                "Developer Tools",
+                "Web-based",
+                "Data Store",
+                "document",
+                "Windows",
+                "Security",
+                "IT Management",
+                "mongodb",
+                "Mac"
+            ],
+            "volume_mounts": []
+        }
     ]
 }

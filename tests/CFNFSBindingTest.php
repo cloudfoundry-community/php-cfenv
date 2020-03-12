@@ -18,19 +18,18 @@ namespace PHPCFEnv\CFEnv;
 
 use PHPUnit\Framework\TestCase;
 
-final class CFVolumeTest extends TestCase {
+final class CFNFSBindingTest extends TestCase {
 
-    public function testVolume() {
+    public function testBinding() {
         $jsonString = file_get_contents(__DIR__.'/cf-service-nfs.json');
         
         $service = new CFService(json_decode($jsonString, true));
-        $vols = $service->getVolumes();
-        $this->assertIsArray($vols);
-        $this->assertEquals(1, count($vols));
-        $vol = $vols[0];
-
-        $this->assertEquals("/var/vcap/data/78525ee7-196c-4ed4-8ac6-857d15334631", $vol->getPath());
-        $this->assertEquals("rw", $vol->getMode());
-
+        
+        $binding = new CFNFSBinding();
+        $binding->bind($service);
+        $volumes = $binding->getVolumes();
+        $this->assertEquals(1, count($volumes));
+        $this->assertEquals("/var/vcap/data/78525ee7-196c-4ed4-8ac6-857d15334631", $volumes[0]->getPath());
     }
+
 }

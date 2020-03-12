@@ -16,8 +16,24 @@
  */
 namespace PHPCFEnv\CFEnv;
 
-interface CFBinding {
+abstract class CFBinding {
 
-    public function bind(CFService $service);
+    private $service;
+
+    /**
+     * Bind to the given service instance.
+     * Throw an exception if the service instance is not appropriate
+     * @throw CFUnsupportedBindingException 
+     */
+    public function bind(CFService $service) {
+        $this->service = $service;
+    }
+
+    /**
+     * @return CFService the underlying service instance
+     */
+    final public function getService() {
+        return $this->service;
+    }
 
 }

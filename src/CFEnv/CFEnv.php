@@ -86,7 +86,7 @@ class CFEnv {
             if(is_array($servicesArray)) {
                 foreach($servicesArray as $serviceType => $serviceTypeArray) {
                     foreach($serviceTypeArray as $service) {
-                        $this->services[] = new CFService($serviceType, $service);
+                        $this->services[] = new CFService($service);
                     }
                 }
             }

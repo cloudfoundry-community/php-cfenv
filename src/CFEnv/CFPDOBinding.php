@@ -18,7 +18,7 @@ namespace PHPCFEnv\CFEnv;
 
 use \PDO;
 
-class CFPDOBinding implements CFBinding {
+class CFPDOBinding extends CFBinding {
 
     const SUPPORTED_DATABASES = "postgres|pgsql|mariadb|mysql|oracle|oci|sqlite";
     const DBTYPE_PG = "(postgres|pgsql)";
@@ -33,7 +33,15 @@ class CFPDOBinding implements CFBinding {
     private $connection;
     private $dsn;
 
+    /**
+     * Bind to the given service instance.
+     * Throw an exception if the service instance is not appropriate
+     * @throw CFUnsupportedBindingException 
+     */
     public function bind(CFService $service) {
+        if(!$service->hasTag('relational')) {
+            throw new CFUnsupportedBindingException("CFPDOBinding cannot be bound to the service '".$service->getName());
+        }
         $this->service = $service;
         $this->dsn = $this->constructDSN();
     }
