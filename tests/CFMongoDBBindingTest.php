@@ -29,6 +29,7 @@ final class CFMongoDBBindingTest extends TestCase {
         $binding->bind($service);
         $client = $binding->getMongoDBClient();
         $this->assertIsObject($client);
+        $this->assertEquals('CloudFoundry_topSecret', $binding->getDatabaseName());
     }
 
     function testUnsupportedBinding() {

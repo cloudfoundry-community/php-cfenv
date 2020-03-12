@@ -37,10 +37,8 @@ $databaseConnection = $databaseBinding->getPDOConnection();
 // similarly for MongoDB
 $mongodbBinding = $bindings->getMongoDBBinding();
 $mongodbClient = $mongodbBinding->getMongoDBClient();
-// You'll need to start by connecting to your database, and its name is given
-// by the 'path' component of the connection URI
-$creds = $mongodbBinding->getService()->getCredentials();
-$path = $creds->getPath();
+// You'll need to start by connecting to your database
+$databaseName = $mongodbBinding->getDatabaseName();
 $database = $mongodbClient->selectDatabase($path);
 
 // Redis

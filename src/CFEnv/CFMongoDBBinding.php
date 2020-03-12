@@ -38,4 +38,11 @@ class CFMongoDBBinding extends CFBinding {
     public function getMongoDBClient() {
         return $this->client;
     }
+
+    /**
+     * Helper method to return the database name which is stored in the connection URI path
+     */
+    public function getDatabaseName() {
+        return $this->service->getCredentials()->getPath();
+    }
 }
