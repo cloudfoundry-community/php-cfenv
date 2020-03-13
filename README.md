@@ -7,6 +7,10 @@ I took inspiration from cf-helper-php and I used example configurations for test
 * cf-helper-php - https://github.com/cloudfoundry-community/cf-helper-php
 * java-cfenv - https://github.com/pivotal-cf/java-cfenv
 
+## Demo App
+There's a simple demo app showing binding to MongoDB here:
+
+https://github.com/dmcintyre-pivotal/php-cfenv-demo
 
 ## Usage
 If you use Composer then you can simply add the dependency to your composer.json
