@@ -23,7 +23,6 @@ final class CFApplicationTest extends TestCase {
     public function testGetters() {
         $jsonString = file_get_contents(__DIR__.'/vcap-application.json');
         $app = new CFApplication(json_decode($jsonString, true));
-        $this->assertIsObject($app);
         $this->assertEquals("06450c72-4669-4dc6-8096-45f9777db68a",$app->getSpaceId());
         $this->assertEquals("my-space",$app->getSpaceName());
         $this->assertEquals("fe98dc76ba549876543210abcd1234",$app->getInstanceId());

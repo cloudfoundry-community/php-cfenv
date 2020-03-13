@@ -41,4 +41,15 @@ final class CFMongoDBBindingTest extends TestCase {
         $this->expectException(CFUnsupportedBindingException::class);
         $binding->bind($service);
     }
+
+    function testGetService() {
+        $jsonString = file_get_contents(__DIR__.'/cf-service-mongodb.json');
+        
+        $service = new CFService(json_decode($jsonString, true));
+        
+        $binding = new CFMongoDBBinding();
+        $binding->bind($service);
+        $service = $binding->getService();
+        $this->assertInstanceOf(CFService::class, $service);
+    }
 }

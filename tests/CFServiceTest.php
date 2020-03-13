@@ -29,7 +29,7 @@ final class CFServiceTest extends TestCase {
         $this->assertEquals("p-mysql" , $service->getLabel());
         $this->assertEquals("100mb" , $service->getPlan());
         $this->assertEquals("mysql" , $service->getName());
-        $this->assertIsObject($service->getCredentials());
+        $this->assertInstanceOf(CFCredentials::class, $service->getCredentials());
         $this->assertIsArray($service->getVolumes());
         $this->assertEquals(array("mysql", "relational"), $service->getTags());
     }
@@ -43,7 +43,7 @@ final class CFServiceTest extends TestCase {
         $this->assertEquals("nfs" , $service->getLabel());
         $this->assertEquals("Existing" , $service->getPlan());
         $this->assertEquals("nfs1" , $service->getName());
-        $this->assertIsObject($service->getCredentials());
+        $this->assertInstanceOf(CFCredentials::class, $service->getCredentials());
         $vols = $service->getVolumes();
         $this->assertIsArray($vols);
         $this->assertEquals(1, count($vols));

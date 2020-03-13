@@ -47,7 +47,7 @@ final class CFEnvTest extends TestCase {
     public function testApplication() {
         $env = $this->getEnv(null, 'vcap-application.json');
 
-        $this->assertIsObject($env->getApplication());
+        $this->assertInstanceOf(CFApplication::class, $env->getApplication());
     }
 
     public function testIsInCloudFoundry() {
@@ -61,7 +61,7 @@ final class CFEnvTest extends TestCase {
         putenv('VCAP_APPLICATION='.$json);
         $read = getenv('VCAP_APPLICATION');
         $env = $this->getEnv();
-        $this->assertIsObject($env->getApplication());
+        $this->assertInstanceOf(CFApplication::class, $env->getApplication());
         putenv('VCAP_APPLICATION');
     }
 
@@ -76,14 +76,14 @@ final class CFEnvTest extends TestCase {
         $env = $this->getEnv('vcap-services.json');
  
         $service = $env->getServiceByName("mysql");
-        $this->assertIsObject($service);
+        $this->assertInstanceOf(CFService::class, $service);
     }
 
     public function testGetSingleDatabase() {
         $env = $this->getEnv('vcap-services.json');
  
         $service = $env->getDatabase();
-        $this->assertIsObject($service);
+        $this->assertInstanceOf(CFService::class, $service);
         $this->assertEquals("mysql", $service->getName());
     }
 

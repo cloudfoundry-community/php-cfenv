@@ -31,4 +31,14 @@ final class CFRedisBindingTest extends TestCase {
         $this->assertIsObject($client);
     }
 
+    function testGetService() {
+        $jsonString = file_get_contents(__DIR__.'/cf-service-redis.json');
+        
+        $service = new CFService(json_decode($jsonString, true));
+        
+        $binding = new CFRedisBinding();
+        $binding->bind($service);
+        $service = $binding->getService();
+        $this->assertInstanceOf(CFService::class, $service);
+    }
 }

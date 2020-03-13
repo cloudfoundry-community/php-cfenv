@@ -18,8 +18,6 @@ namespace PHPCFEnv\CFEnv;
 
 class CFNFSBinding extends CFBinding {
 
-    private $service;
-
     /**
      * Bind to the given service instance.
      * Throw an exception if the service instance is not appropriate
@@ -29,10 +27,10 @@ class CFNFSBinding extends CFBinding {
         if(!$service->hasTag('nfs')) {
             throw new CFUnsupportedBindingException("CFNFSBinding cannot be bound to the service '".$service->getName());
         }
-        $this->service = $service;
+        parent::bind($service);
     }
 
     public function getVolumes() {
-        return $this->service->getVolumes();
+        return $this->getService()->getVolumes();
     }
 }

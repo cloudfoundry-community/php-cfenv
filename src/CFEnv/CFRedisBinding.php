@@ -19,7 +19,6 @@ use Predis\Client;
 
 class CFRedisBinding extends CFBinding {
 
-    private $service;
     private $client;
 
     /**
@@ -31,7 +30,7 @@ class CFRedisBinding extends CFBinding {
         if(!$service->hasTag('redis')) {
             throw new CFUnsupportedBindingException("CFPDOBinding cannot be bound to the service '".$service->getName());
         }
-        $this->service = $service;
+        parent::bind($service);
         $creds = $service->getCredentials();
 
         $this->client = new Client([

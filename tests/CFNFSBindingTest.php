@@ -32,4 +32,14 @@ final class CFNFSBindingTest extends TestCase {
         $this->assertEquals("/var/vcap/data/78525ee7-196c-4ed4-8ac6-857d15334631", $volumes[0]->getPath());
     }
 
+    function testGetService() {
+        $jsonString = file_get_contents(__DIR__.'/cf-service-nfs.json');
+        
+        $service = new CFService(json_decode($jsonString, true));
+        
+        $binding = new CFNFSBinding();
+        $binding->bind($service);
+        $service = $binding->getService();
+        $this->assertInstanceOf(CFService::class, $service);
+    }
 }

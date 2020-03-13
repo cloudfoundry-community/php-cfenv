@@ -28,8 +28,6 @@ class CFPDOBinding extends CFBinding {
     const DSN_PATTERN = "%s:host=%s;dbname=%s";
     const DSN_PATTERN_WITH_PORT = "%s:host=%s;port=%s;dbname=%s";
     
-
-    private $service;
     private $connection;
     private $dsn;
 
@@ -42,13 +40,13 @@ class CFPDOBinding extends CFBinding {
         if(!$service->hasTag('relational')) {
             throw new CFUnsupportedBindingException("CFPDOBinding cannot be bound to the service '".$service->getName());
         }
-        $this->service = $service;
+        parent::bind($service);
         $this->dsn = $this->constructDSN();
     }
 
     public function getPDOConnection() {
         if(is_null($this->connection)) {
-            $creds = $this->service->getCredentials();
+            $creds = $this->getService()->getCredentials();
             $this->connection = new PDO($this->dsn, $creds->getUsername(), $creds->getPassword());
         }
         return $this->connection;
@@ -60,7 +58,7 @@ class CFPDOBinding extends CFBinding {
 
     private function constructDSN() {
         // Figure out the type of the database
-        $creds = $this->service->getCredentials();
+        $creds = $this->getService()->getCredentials();
         $uriInfo = $creds->getUriInfo();
 
         $type = "";
@@ -73,11 +71,11 @@ class CFPDOBinding extends CFBinding {
         }
 
         if(empty($type)) {
-            $type = $this->parseType($this->service->getName());
+            $type = $this->parseType($this->getService()->getName());
         }
 
         if(empty($type)) {
-            $type = $this->parseType($this->service->getLabel());
+            $type = $this->parseType($this->getService()->getLabel());
         }
 
         if(isset($uriInfo['path']) && !empty($uriInfo['path'])) {

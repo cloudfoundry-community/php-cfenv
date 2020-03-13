@@ -19,7 +19,6 @@ use MongoDB\Client;
 
 class CFMongoDBBinding extends CFBinding {
 
-    private $service;
     private $client;
 
     /**
@@ -31,7 +30,7 @@ class CFMongoDBBinding extends CFBinding {
         if(!$service->hasTag('mongodb')) {
             throw new CFUnsupportedBindingException("CFMongoDBBinding cannot be bound to the service '".$service->getName());
         }
-        $this->service = $service;
+        parent::bind($service);
         $this->client = new Client($service->getCredentials()->getUri());
     }
 
@@ -43,6 +42,6 @@ class CFMongoDBBinding extends CFBinding {
      * Helper method to return the database name which is stored in the connection URI path
      */
     public function getDatabaseName() {
-        return $this->service->getCredentials()->getPath();
+        return $this->getService()->getCredentials()->getPath();
     }
 }
