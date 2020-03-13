@@ -18,12 +18,17 @@ namespace PHPCFEnv\CFEnv;
 
 class CFApplication {
 
-    private $applicationData = array();
-
+	private $applicationData = array();
+	private $limits;
 
     public function __construct(array $jsonArray) {
-        $this->applicationData = $jsonArray;
-    }
+		$this->applicationData = $jsonArray;
+		$this->limits = new CFLimits($jsonArray['limits']);
+	}
+	
+	public function getLimits() {
+		return $this->limits;
+	}
     
     public function getMap() {
 		return $this->applicationData;

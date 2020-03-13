@@ -38,4 +38,14 @@ final class CFApplicationTest extends TestCase {
         $this->assertEquals("my-app",$app->getName());
         $this->assertEquals(array("my-app.example.com"),$app->getUris());
     }
+
+    public function testLimits() {
+        $jsonString = file_get_contents(__DIR__.'/vcap-application.json');
+        $app = new CFApplication(json_decode($jsonString, true));
+        $limits = $app->getLimits();
+        $this->assertEquals(512, $limits->getMem());
+        $this->assertEquals(1024, $limits->getDisk());
+        $this->assertEquals(16384, $limits->getFds());
+
+    }
 }
