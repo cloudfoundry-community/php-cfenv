@@ -1,5 +1,5 @@
 {
-    "name": "dmcintyre-pivotal/php-cfenv",
+    "name": "cloudfoundry-community/php-cfenv",
     "description": "Library to manage Cloud Foundry service bindings",
     "minimum-stability": "stable",
     "license": "MIT",
